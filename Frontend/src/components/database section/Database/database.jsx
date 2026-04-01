@@ -1,5 +1,6 @@
 import React from 'react'
 import image from '../../Images/img.jpeg'
+
 const Database = () => {
   return (
     <div className='h-full w-full flex flex-col items-center gap-10 px-10 py-10 bg-[#0d1117] overflow-y-auto'>
