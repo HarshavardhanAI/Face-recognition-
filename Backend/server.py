@@ -5,19 +5,41 @@ import numpy as np
 import os
 from retinaface import RetinaFace
 from keras_facenet import FaceNet
-import pinecone
+from pinecone import Pinecone,ServerlessSpec
 import uuid
 import cloudinary
 import cloudinary.uploader
+from dotenv import load_dotenv
 
+# loading api key
+load_dotenv()
+
+#flask config
 app = Flask(__name__)
 CORS(app)
 
 embedder = FaceNet()
 
-pinecone.init(api_key=os.getenv("PINECONE_API"), environment="us-east-1")
-index = pinecone.Index("face-recongition")
+# pinecone config
+pc = Pinecone(
+    api_key = os.getenv("PINECONE_API")
+)
+index_name = "face-recongition"
 
+if index_name not in pc.list_indexes().names():
+    pc.create_index(
+        name=index_name,
+        dimension=512,  # FaceNet embeddings = 512
+        metric="cosine",
+        spec=ServerlessSpec(
+            cloud="aws",
+            region="us-east-1"
+        )
+    )
+
+index = pc.Index(index_name)
+
+# cloudinary config 
 cloudinary.config(
     cloud_name="CLOUDINARY_CLOUD_NAME",
     api_key="CLOUDINARY_API_KEY",

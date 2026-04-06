@@ -1,8 +1,8 @@
 flask
 flask_cors
-opencv-python
+opencv-python-headless
 cloudinary
 pinecone
 tensorflow
 retina-face
-tf-keras
+keras-facenet
