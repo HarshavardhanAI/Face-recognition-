@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className='text-2xl md:hidden' onClick={()=>setIsOpen(!isOpen)}>
           <GiHamburgerMenu />
         </div>
-        <h1 className='font-bold text-xl md:text-xl'>VisionID</h1>
+        <h1 className='font-bold text-xl md:text-xl pl-10'>VisionID</h1>
       </aside>
 
       {/* right side of navbar */}

@@ -4,14 +4,20 @@ import { GiFireworkRocket } from "react-icons/gi";
 
 const ImagePreview = ({ handleAnalyse, setIsAnalysing }) => {
     const [image, setImage] = useState(null);
+    const [imageFile, setImageFile] = useState(null)
     const handleFileChange = (e) => {
       const file = e.target.files[0];
       if (file) {
-      setImage( URL.createObjectURL(file));
-      setIsAnalysing(false);
+        setImageFile(file);
+        setImage( URL.createObjectURL(file));
+        setIsAnalysing(false);
       }
-  };
-
+    };
+    const handleRemove = () => {
+      setImage(null)
+      setImageFile(null)   // ← clear both
+    }
+    
   return (
   <>
   {image ? (
@@ -23,13 +29,13 @@ const ImagePreview = ({ handleAnalyse, setIsAnalysing }) => {
               </div>
               {/* editing options */}
               <div className='flex w-full justify-center p-2 gap-4'>
-                <button className='flex gap-2 bg-[#58a6ff] hover:bg-[#58a6ff]/80 px-4 py-2 rounded-md' onClick={handleAnalyse}>
+                <button className='flex gap-2 bg-[#58a6ff] hover:bg-[#58a6ff]/80 px-4 py-2 rounded-md' onClick={() => handleAnalyse(imageFile)}>
                   <GiFireworkRocket className='h-6 w-6 text-white'  />
                   Analyse Image
                 </button>
   
-                <button className='flex gap-2 bg-[#58a6ff] hover:bg-[#58a6ff]/80 px-4 py-2 rounded-md' onClick={() => setImage(null)}>
-                  <MdDeleteOutline className='h-6 w-6 text-white' onClick={() => setImage(null)} />
+                <button className='flex gap-2 bg-[#58a6ff] hover:bg-[#58a6ff]/80 px-4 py-2 rounded-md' onClick={handleRemove}>
+                  <MdDeleteOutline className='h-6 w-6 text-white'  />
                   Remove Image
                 </button>
               </div>

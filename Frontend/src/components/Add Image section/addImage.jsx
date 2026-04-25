@@ -3,6 +3,8 @@ import ImagePreview from '../Dashborad/ImagePreview'
 import { MdOutlineFileUpload, MdDeleteOutline } from 'react-icons/md'
 import Spinner from '../Utility/Spinner'
 import { NavLink } from 'react-router-dom';
+import { addPerson } from '../../api';
+import toast from 'react-hot-toast';
 
 const AddImage = () => {
   const [handleImageUpload,setImageUploaded] = useState(false);
@@ -27,32 +29,35 @@ const AddImage = () => {
   };
 
   let handleAnalyse = async () => {
-    if (!image || !userName) {
-      alert("Please provide both a name and an image.");
+    if(!username && !image){
+      toast.error("Please provide an image and a name.");
+      return;
+    }
+    if (!image ) {
+      toast.error("Please provide an image.");
+      return;
+    }
+    if(!userName){
+      toast.error("Please provide a name.");
       return;
     }
     setIsAnalysing(true);
-    const formData = new FormData();
-    formData.append('image', image);
-    formData.append('name', userName);
-    const response = await fetch('http://localhost:5000/addperson', {
-      method: 'POST',
-      body: formData,
-    });
-    const result = await response.json();
-    console.log(result);
-    setIsAnalysing(false);
-    setIsSuccess(false);
-    setIsDuplicate(false);
-    setIsNoFace(false);
-
-    if (result.status === 'success') {
+    try{
+      const  result  = await addPerson(image,userName);
+      if (result.status === 'success') {
       setIsSuccess(true);
     } else if (result.status === "duplicate") {
       setIsDuplicate(true);
-    } else if (result.status === "noface") {
+    } else if (result.status === "no face") {
       setIsNoFace(true);
     }
+    }
+    catch(error){ 
+      toast.error('Server error, please try again.');
+    } finally {
+      setIsAnalysing(false);
+    }
+    
   }
   
   const removeImage = () => {

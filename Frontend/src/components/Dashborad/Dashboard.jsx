@@ -4,17 +4,26 @@ import { GiFireworkRocket } from "react-icons/gi";
 import Analysing from './Analysing';
 import ImagePreview from './ImagePreview';
 import Results from './Results';
+import { analyseImage } from '../../api';
+import toast from 'react-hot-toast';
 
 const Dashboard = () => {
   const [isAnalysing, setIsAnalysing] = useState(false);
   const[viewResults, setViewResults] = useState(false);
-  const handleAnalyse = () => {
+  let [result,setResult] = useState(null);
+
+
+  const handleAnalyse = async(image) => {
     setIsAnalysing(true);
-    
-    setTimeout(() => {
-      setIsAnalysing(false);
+    try{
+      const data = await analyseImage(image);
+      setResult(data);
       setViewResults(true);
-    }, 5000);
+    } catch (error) {
+      toast.error('server error,Please try again.');
+    } finally {
+      setIsAnalysing(false);
+    }
   };
 
   return (
@@ -28,7 +37,7 @@ const Dashboard = () => {
       </div>
 
       {/* Upload Section */}
-      {viewResults ? <Results /> : (  
+      {viewResults ? <Results data={result} /> : (  
         isAnalysing ? (<Analysing />): <ImagePreview handleAnalyse={handleAnalyse} setIsAnalysing={setIsAnalysing} />)
       }
     </div>
