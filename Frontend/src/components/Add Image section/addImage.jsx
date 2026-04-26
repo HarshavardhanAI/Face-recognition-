@@ -29,7 +29,7 @@ const AddImage = () => {
   };
 
   let handleAnalyse = async () => {
-    if(!username && !image){
+    if(!userName && !image){
       toast.error("Please provide an image and a name.");
       return;
     }
@@ -48,7 +48,7 @@ const AddImage = () => {
       setIsSuccess(true);
     } else if (result.status === "duplicate") {
       setIsDuplicate(true);
-    } else if (result.status === "no face") {
+    } else if (result.status === "no_face") {
       setIsNoFace(true);
     }
     }

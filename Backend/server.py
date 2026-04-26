@@ -169,7 +169,7 @@ def add_person():
 
     face = list(faces.values())[0]
 
-    if face["score"]>0.90:
+    if face["score"]>0.75:
         embedding = extract_face_embeddings(img,face)
         if embedding is None:
             return jsonify({"status": "error", "message": "invalid face crop"}), 400
@@ -184,23 +184,15 @@ def add_person():
         matches = query_response.get("matches", [])
         if matches:
             match = matches[0]
-            matched_values = match.get("values")
-            if matched_values:
-                matched_vector = np.array(matched_values, dtype=np.float32)
-                matched_norm = np.linalg.norm(matched_vector)
-                if matched_norm > 0:
-                    matched_vector = matched_vector / matched_norm
-                    euclidean_distance = float(np.linalg.norm(embedding - matched_vector))
-
-                    # For normalized embeddings, lower distance means more similar.
-                    duplicate_distance_threshold = 0.60
-                    if euclidean_distance <= duplicate_distance_threshold:
-                        return jsonify({
-                            "status": "duplicate",
-                            "message": "Face already exists",
-                            "distance": euclidean_distance,
-                            "matched_name": match.get("metadata", {}).get("name")
-                        }),200
+            score = matches[0].get("score",0)
+            duplicate_threshold = 0.80
+            if score>=duplicate_threshold:
+                return jsonify({
+                    "status":"duplicate",
+                    "messagae":"person is already in db",
+                    "similarity":score,
+                    "matched_name" : match.get("metadata",{}).get("name")
+                }),200
         # upload to cloundinary 
         _, buffer = cv.imencode(".jpg",img)
         upload_result = cloudinary.uploader.upload(buffer.tobytes())
