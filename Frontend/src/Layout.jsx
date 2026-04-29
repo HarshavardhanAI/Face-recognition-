@@ -1,6 +1,6 @@
 import React from 'react'
 import Dashboard from './components/Dashborad/Dashboard'
-import Database from './components/database-section/database'
+import Database from './components/Database-section/database'
 import About from './components/About section/About'
 import AddImage from './components/Add Image section/addImage'
 import Navbar from './components/Navbar/Navbar'
