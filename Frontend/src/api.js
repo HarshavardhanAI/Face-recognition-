@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL
+const BASE = import.meta.env.VITE_API_URL || ""
 
 export const analyseImage = (imageFile) => {
     const formData = new FormData()
