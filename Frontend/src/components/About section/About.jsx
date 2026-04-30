@@ -16,7 +16,7 @@ const About = () => {
   }
 
   const CategoryBox = ({ title, items, color }) => (
-    <div className={`bg-gray-900 rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow duration-300 border-2 ${color}`}>
+    <div className={`bg-[#0d1117] rounded-lg p-4 sm:p-6 hover:shadow-lg transition-shadow duration-300 border-2 ${color}`}>
       <h3 className="text-lg sm:text-xl font-bold text-white uppercase tracking-wide mb-4 flex items-center">
         <span className="w-2 h-2 rounded-full mr-2"></span>
         {title}
